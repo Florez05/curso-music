@@ -126,7 +126,48 @@ function deleteArtist(req, res) {
             }
         }
     });
+}
 
+//SUBIR IMAGEN Y MOSTRAR
+function uploadImage(req, res){
+    var artistId = req.params.id; //recoge el id de la url
+    var file_name = 'No se subio la imagen...'; 
+
+    if(req.files){
+        var file_path = req.files.image.path; //si se subio el fichero
+        var file_split = file_path.split('\/'); //recortar el string (file_path) y conseguir unicamente el nombre de la imagen
+        var file_name = file_split[2]; //recoger el nombre que estara en la posicion 2 
+        
+        var ext_split = file_name.split('\.'); //sacar la extencion de la imagen
+        var file_ext = ext_split[1]; //recoger la extencion
+
+        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif'){//comprobar si el fichero tiene la extencion correcta
+            Artist.findByIdAndUpdate(artistId, {image: file_name}, (err, artistUpdated) => {
+                if(!artistUpdated){//si no hay el error, comprobar si el usuario no devuelve los datos
+                    res.status(404).send({message: 'No se ha podido actualizar el usuario'});
+                }else{// si todo esta bien
+                    res.status(200).send({artist: artistUpdated}); //devuelve el usuario que ha actualizado, no con los datos nuevos, con los datos que tenia antes
+                }
+            });           
+        }else{
+            res.status(200).send({message: 'Extencion del archivo incorrecta'}); 
+        }
+        //console.log(file_name);
+    }else{
+        res.status(200).send({message: 'No has subido ninguna imagen'});
+    }
+}
+//CONSEGUIR LA IMAGEN DEL USUARIO
+function getImageFile(req, res){
+    var imageFile = req.params.imageFile;//el nombre del fichero que se va a sacar de la bd
+    var path_file = './uploads/artists/'+imageFile;
+    fs.exists(path_file, function(exists){ //comprobar si existe un fichero en el servidor
+        if(exists){ //comprobamos si la funcion de talbac es correcto, si da true existe
+            res.sendFile(path.resolve(path_file));//nos envia un fichero
+        }else{
+            res.status(200).send({message: 'No existe la imagen...'});
+        }
+    }); 
 }
 
 module.exports = {
@@ -134,5 +175,7 @@ module.exports = {
     saveArtist,
     getArtists,
     updateArtist,
-    deleteArtist
+    deleteArtist,
+    uploadImage,
+    getImageFile
 };
