@@ -8,6 +8,7 @@ var Artist = require('../models/artist'); //importar
 var Album = require('../models/album');
 var Song = require('../models/song');
 
+//SACAR ARTIST
 function getArtist(req, res) {
     var artistId = req.params.id;//recoger un parametro que nos llegara por la url
 
@@ -46,7 +47,7 @@ function saveArtist(req, res) {
         }
     });
 }
-//SACAR EL ARTISTA
+//LISTAR EL ARTISTA
 function getArtists(req, res) {
     if (req.params.page) {
         var page = req.params.page;
