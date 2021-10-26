@@ -86,7 +86,7 @@ function updateArtist(req, res) {
             if (!artistUpdated) {
                 res.status(404).send({ message: 'El artista no ha sido actualizado' });
             } else {
-                res.status(200).send({ artist: artistUpdated });
+                res.status(200).send({ update });
             }
         }
     });
@@ -142,7 +142,7 @@ function uploadImage(req, res){
         var ext_split = file_name.split('\.'); //sacar la extencion de la imagen
         var file_ext = ext_split[1]; //recoger la extencion
 
-        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif'){//comprobar si el fichero tiene la extencion correcta
+        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif'){//comprobar si el fichero tiene la extencion correcta
             Artist.findByIdAndUpdate(artistId, {image: file_name}, (err, artistUpdated) => {
                 if(!artistUpdated){//si no hay el error, comprobar si el usuario no devuelve los datos
                     res.status(404).send({message: 'No se ha podido actualizar el usuario'});

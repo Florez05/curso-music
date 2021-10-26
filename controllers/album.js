@@ -88,7 +88,7 @@ function updateAlbum(req, res) {
             if (!albumUpdated) {
                 res.status(404).send({message:'NO se ha actualizado el album'});
             } else {
-                res.status(200).send ({album: albumUpdated});
+                res.status(200).send ({ update });
             }
         }
     })

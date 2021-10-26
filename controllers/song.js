@@ -92,7 +92,7 @@ function updateSong(req, res) {
             if (!songUpdated) {
                 res.status(404).send({message:'La cancion no se ha actualizado'});
             } else {
-                res.status(200).send({song: songUpdated});
+                res.status(200).send({update});
             }
         }
     });

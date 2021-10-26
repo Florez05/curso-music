@@ -122,7 +122,7 @@ function uploadImage(req, res){
                 if(!userUpdated){//si no hay el error, comprobar si el usuario no devuelve los datos
                     res.status(404).send({message: 'No se ha podido actualizar el usuario'});
                 }else{// si todo esta bien
-                    res.status(200).send({user: userUpdated}); //devuelve el usuario que ha actualizado, no con los datos nuevos, con los datos que tenia antes
+                    res.status(200).send({image: file_name, user: userUpdated}); //devuelve el usuario que ha actualizado, no con los datos nuevos, con los datos que tenia antes
                 }
             });           
         }else{
