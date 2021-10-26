@@ -7,8 +7,6 @@ var mongoosePaginate = require('mongoose-pagination');
 var Artist = require('../models/artist'); //importar 
 var Album = require('../models/album');
 var Song = require('../models/song');
-const album = require('../models/album');
-const { populate } = require('../models/artist');
 
 //SACAR ALBUM
 function getAlbum(req, res) {
