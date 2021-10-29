@@ -17,12 +17,14 @@ export class AppComponent implements OnInit {
     public errorMessage = "";
 
     constructor(
-        private _userService: UserService
+        private _userService:UserService
     ) {
-        this.user = new User('', '', '', '', '', 'ROLE_ADMIN', '');
+        this.user = new User('','','','','','ROLE_USER','');
     }
 
     ngOnInit() {
+        this.identity = "";
+        this.token = "";
         /* var texto = this._userService.signup();
         console.log(texto); */
     }
@@ -32,24 +34,27 @@ export class AppComponent implements OnInit {
         //conseguir los datos del usuario identificado
         this._userService.signup(this.user).subscribe(
             response => {
-                let identity = response;
+                let identity = response.user;
                 this.identity = identity;
 
-                if (this.identity._id) {
-                    alert("el usuario no esta correctamente logueado");
+                if (!this.identity._id) {
+                    alert("el usuario esta correctamente logueado");
                 }else{
                     //crear elemento en el localStorage para tener al usuario sesion
+                    localStorage.setItem('identity', JSON.stringify(identity));
 
                     //conseguir el token para enviarselo a cada peticion hhtp
-                    this._userService.signup(this.user, true).subscribe( (response) => {
+                    this._userService.signup(this.user, true).subscribe( 
+                        response => {
                             let token = response.token;
                             this.token = token;
-                            console.log("rta"+JSON.stringify(response));
+                            //console.log("rta"+JSON.stringify(response));
                             
                             if (this.token.length <= 0) {
                                 alert("el token no se ha generado");
                             }else{
                                 //crear elemento en el localStorage para tener el token disponible
+                                localStorage.setItem('token', token);
                                 console.log(token);
                                 console.log(identity);                               
                             }
@@ -72,8 +77,7 @@ export class AppComponent implements OnInit {
             }, 
             error => {
                 this.errorMessage = <any> error.error.message;
-                console.log(error.error.message);
-                
+                //console.log(error.error.message);               
                 this.errorMessageDiv = true;
                 if (this.errorMessage != null) {              
                     this.errorMessage = error.error.message;
